@@ -51,7 +51,7 @@
         <nav class="space-x-6">
           <a href="dashboard.php" class="hover:text-primary transition">Home</a>
           <a href="about.php" class="hover:text-primary transition">About</a>
-          <a href="posting1.php" class="hover:text-primary transition">Issue?</a>
+          <!-- <a href="posting1.php" class="hover:text-primary transition">Issue?</a> -->
           <a href="contactUs.html" class="hover:text-primary transition">Contact Us</a>
           <a href="./pages/Faq/index.html" class="hover:text-primary transition">FAQ</a>
           <a href="signup.php" class="hover:text-primary transition">Signup</a>
@@ -63,8 +63,9 @@
     <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
   <div class="absolute inset-0 bg-black/50 z-0"></div>
   <video class="absolute inset-0 w-full h-full object-cover opacity-40 z-0" autoplay muted loop>
-    <source src="./assets/yoyo1.mp4" type="video/mp4" />
+    <source src="./assets/yoyo.mp4" type="video/mp4" />
   </video>
+  <!-- <img src="https://i.pinimg.com/736x/7c/51/31/7c5131143f8995e45abd480ac879b274.jpg" alt="Background Image" class="bg-video" /> -->
   <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
     <h1 class="text-5xl md:text-7xl font-extrabold text-white drop-shadow-lg">
       Powering Better Electricity Services

@@ -7,22 +7,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     if (!empty($email) && !empty($password)) {
-        // Modified query to match your actual table structure
         $stmt = $con->prepare("SELECT * FROM signup WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user) {
-            // Verify the password against the hashed password
+        
             if (password_verify($password, $user['password'])) {
-                // Start session and store user data
+                
                 session_start();
-                $_SESSION['user_id'] = $user['email']; // Using email as identifier since no id column
+                $_SESSION['user_id'] = $user['email']; 
                 $_SESSION['user_email'] = $user['email'];
                 $_SESSION['user_name'] = $user['name'];
                 
                 // Redirect to posting1.php
-                header("Location: posting1.php");
+                header("Location: index.php");
                 exit();
             } else {
                 $error = "Invalid email or password.";
