@@ -53,7 +53,7 @@
           <a href="about.php" class="hover:text-primary transition font-semibold text-primary">About</a>
         
           <a href="contactUs.html" class="hover:text-primary transition">Contact Us</a>
-          <a href="../pages/Faq/index.html" class="hover:text-primary transition">FAQ</a>
+          <a href="faq.php" class="hover:text-primary transition">FAQ</a>
           <a href="login.php" class="hover:text-primary transition">Login</a>
         </nav>
       </div>
@@ -141,7 +141,7 @@
                 <h3 class="text-xl font-bold">Nihal Ok</h3>
                 <p class="text-primary mb-3">Frontend & Backend</p>
                 <p class="text-sm text-gray-400">
-                  Former energy consultant who saw the need for better consumer-provider communication channels.
+            
                 </p>
                 <div class="flex mt-4 space-x-3">
                   <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-linkedin-in"></i></a>
@@ -151,12 +151,12 @@
             </div>
             
             <div class="team-member-card bg-gray-900 rounded-lg overflow-hidden transition duration-300">
-              <img src="https://images.pexels.com/photos/839011/pexels-photo-839011.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Sarah Chen" class="w-full h-64 object-cover">
+              <!-- <img src="https://images.pexels.com/photos/839011/pexels-photo-839011.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Sarah Chen" class="w-full h-64 object-cover"> -->
               <div class="p-6">
                 <h3 class="text-xl font-bold">Prince Shekhawat</h3>
                 <p class="text-primary mb-3">CTO</p>
                 <p class="text-sm text-gray-400">
-                  Tech innovator with a passion for building platforms that solve real-world infrastructure problems.
+              
                 </p>
                 <div class="flex mt-4 space-x-3">
                   <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-linkedin-in"></i></a>
@@ -171,7 +171,7 @@
                 <h3 class="text-xl font-bold">Dinesh</h3>
                 <p class="text-primary mb-3">Frontend & Backend</p>
                 <p class="text-sm text-gray-400">
-                  Grassroots organizer who connects PowerCare with local communities and utility providers.
+              
                 </p>
                 <div class="flex mt-4 space-x-3">
                   <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-twitter"></i></a>
@@ -186,7 +186,7 @@
                 <h3 class="text-xl font-bold">Sunny Kumar</h3>
                 <p class="text-primary mb-3">Frontend & Backend</p>
                 <p class="text-sm text-gray-400">
-                  Turns user feedback into actionable insights that drive infrastructure improvements.
+    
                 </p>
                 <div class="flex mt-4 space-x-3">
                   <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-linkedin-in"></i></a>

@@ -1,20 +1,53 @@
-<?php include './partials/connect.php'; ?>
-<?php include './partials/header.php'; ?>
-
 <?php 
-  $searchQuery = "";
-  $params = [];
+include './partials/connect.php';
+include './partials/header.php';
 
-  if (isset($_GET['search']) && !empty($_GET['search'])) {
-      $search = "%" . $_GET['search'] . "%";
-      $searchQuery = " WHERE user_problem LIKE :search OR user_name LIKE :search ";
-      $params[':search'] = $search;
-  }
+if(isset($_GET['delete_id'])) {
+    $delete_id = $_GET['delete_id'];
+    
+    try {
+        $stmt = $con->prepare("SELECT user_images FROM user WHERE user_id = ?");
+        $stmt->execute([$delete_id]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if($user) {
+            $images = json_decode($user['user_images'], true);
+            if(is_array($images)) {
+                foreach($images as $image) {
+                    if(file_exists($image)) {
+                        unlink($image);
+                    }
+                }
+            }
+            
+            $stmt = $con->prepare("DELETE FROM user WHERE user_id = ?");
+            $stmt->execute([$delete_id]);
+            
+            $_SESSION['message'] = "Report deleted successfully!";
+            $_SESSION['message_type'] = "success";
+        }
+    } catch(PDOException $e) {
+        $_SESSION['message'] = "Error deleting report: " . $e->getMessage();
+        $_SESSION['message_type'] = "danger";
+    }
+    
+    header("Location: index.php");
+    exit();
+}
 
-  $sql = "SELECT * FROM user" . $searchQuery;
-  $stmt = $con->prepare($sql);
-  $stmt->execute($params);
-  $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$searchQuery = "";
+$params = [];
+
+if (isset($_GET['search']) && !empty($_GET['search'])) {
+    $search = "%" . $_GET['search'] . "%";
+    $searchQuery = " WHERE user_problem LIKE :search OR user_name LIKE :search ";
+    $params[':search'] = $search;
+}
+
+$sql = "SELECT * FROM user" . $searchQuery;
+$stmt = $con->prepare($sql);
+$stmt->execute($params);
+$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +60,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
   <style>
     :root {
       --primary: #a855f7;
@@ -258,12 +290,55 @@
         margin-bottom: 20px;
       }
     }
+    .btn-danger{
+      background-color: var(--primary);
+      border: none;
+      border-radius: 30px;
+      padding: 10px 20px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      width: 50px;
+      height: 50px;
+    }
+    .btn-warning{
+      background-color: var(--primary);
+      border: none;
+      border-radius: 30px;
+      padding: 10px 20px;
+      font-weight: 500;
+      letter-spacing: 0.1px;
+      transition: all 0.3s ease;
+      width: 50px;
+      height: 50px;
+    }
+    .btn-warning i{
+      margin-top: 8px;
+    }
+    .btn-danger1{
+      background-color: var(--primary);
+      border: none;
+      border-radius: 30px;
+      padding: 10px 20px;
+      font-weight: 500;
+      letter-spacing: 0.1px;
+      transition: all 0.3s ease;
+    }
   </style>
 </head>
 
 <body>
 
-<!-- Search Bar -->
+<?php if(isset($_SESSION['message'])): ?>
+    <div class="container mt-3">
+        <div class="alert alert-<?php echo $_SESSION['message_type']; ?> alert-dismissible fade show" role="alert">
+            <?php echo $_SESSION['message']; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <?php unset($_SESSION['message']); unset($_SESSION['message_type']); ?>
+<?php endif; ?>
+
 <div class="container">
   <form method="GET" action="index.php" class="search-form">
     <div class="input-group">
@@ -273,7 +348,6 @@
   </form>
 </div>
 
-<!-- Reports Display -->
 <div class="container py-5">
   <?php if($users): ?>
     <div class="row">
@@ -294,6 +368,12 @@
                       <a href="stories.php?story_id=' . $row['user_id'] . '" class="btn btn-primary">
                         <i class="fas fa-book-open me-2"></i>View Report
                       </a>
+                      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal'.$row['user_id'].'">
+                        <i class="fas fa-trash me-2"></i>
+                      </button>
+                      <a href="edit.php?id=' . $row['user_id'] . '" class="btn btn-warning">
+                        <i class="fas fa-edit me-2"></i>
+                      </a>
                       <div class="dropdown">
                         <button class="btn btn-outline-secondary rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
                           <i class="fas fa-share-alt"></i>
@@ -304,6 +384,24 @@
                           <li><a class="dropdown-item" href="https://api.whatsapp.com/send?text=Check out this report: http://yourwebsite.com/stories.php?story_id=' . $row['user_id'] . '" target="_blank"><i class="fab fa-whatsapp me-2"></i>WhatsApp</a></li>
                         </ul>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>';
+              
+        echo '<div class="modal fade" id="deleteModal'.$row['user_id'].'" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-0">
+                      <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to delete this report? This action cannot be undone.
+                    </div>
+                    <div class="modal-footer border-0">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <a href="index.php?delete_id='.$row['user_id'].'" class="btn btn-danger1">Delete</a>
                     </div>
                   </div>
                 </div>
@@ -321,12 +419,10 @@
   <?php endif; ?>
 </div>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
-  // Animate cards when they come into view
   $(document).ready(function() {
     function animateCards() {
       $('.card').each(function(i) {
@@ -341,16 +437,13 @@
         }
       });
     }
-    
-    // Run on load
+  
     animateCards();
     
-    // Run on scroll
     $(window).scroll(function() {
       animateCards();
     });
     
-    // Add hover effect to cards
     $('.card').hover(
       function() {
         $(this).css('transform', 'translateY(-10px)');
@@ -361,6 +454,10 @@
         $(this).css('box-shadow', '0 5px 15px rgba(0,0,0,0.08)');
       }
     );
+    
+    setTimeout(function() {
+      $('.alert').alert('close');
+    }, 5000);
   });
 </script>
 

@@ -1,13 +1,12 @@
 <?php
 include 'partials/connect.php';
 
-
 $user_id = 3; 
 
-$stmt = $con->prepare("SELECT * FROM user WHERE user_id = :user_id");
+$stmt = $con->prepare("SELECT * FROM signup WHERE id = :user_id");
 $stmt->bindParam(':user_id', $user_id);
 $stmt->execute();
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+$signup = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -44,14 +43,13 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 <body>
     <div class="profile-container">
         <h2>User Profile</h2>
-        <?php if ($user): ?>
+        <?php if ($signup): ?>
             <div class="profile-field">
-                <label>Name:</label> <?php echo htmlspecialchars($user['user_name']); ?>
+                <label>Name:</label> <?php echo htmlspecialchars($signup['name']); ?>
             </div>
             <div class="profile-field">
-                <label>Email:</label> <?php echo htmlspecialchars($user['email']); ?>
+                <label>Email:</label> <?php echo htmlspecialchars($signup['email']); ?>
             </div>
-            <!-- Add more fields as needed -->
         <?php else: ?>
             <p>User not found.</p>
         <?php endif; ?>

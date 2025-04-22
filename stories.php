@@ -154,7 +154,7 @@ if (!$con) {
 
         .error-message {
             color: var(--danger);
-            background-color: rgba(239, 68, 68, 0.1);
+            background-color: rgba(239, 68, 68, 0.1);ṭ
             padding: 0.75rem;
             border-radius: 8px;
             margin-bottom: 1.5rem;
@@ -200,7 +200,6 @@ if (!$con) {
                 echo '</div></div>';
             }
 
-            // Show the second image and remaining paragraphs if available
             if (isset($user_images[1]) && !empty($user_images[1])) {
                 echo '<div class="container story-container">
                         <img src="' . $user_images[1] . '" class="fixed-size-img" alt="Story Image">
@@ -244,7 +243,7 @@ if (!$con) {
     </div>
 
     <?php
-    // Handle comment submission
+
     if (isset($_POST['submit_comment'])) {
         $username = mysqli_real_escape_string($con, $_POST['username']);
         $comment = mysqli_real_escape_string($con, $_POST['comment']);
@@ -252,11 +251,9 @@ if (!$con) {
         $insert_sql = "INSERT INTO comments (story_id, username, comment) VALUES ('$story_id', '$username', '$comment')";
         mysqli_query($con, $insert_sql);
 
-        // Refresh to show the comment
         echo "<meta http-equiv='refresh' content='0'>";
     }
 
-    // Fetch and display comments
     if (isset($story_id)) {
         $comment_sql = "SELECT * FROM comments WHERE story_id = $story_id ORDER BY created_at DESC";
         $comment_result = mysqli_query($con, $comment_sql);
@@ -273,14 +270,12 @@ if (!$con) {
     }
     ?>
 
-    <!-- Footer -->
     <footer class="text-center py-4">
         <div class="container">
             <p>&copy; 2025 PowerCare. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

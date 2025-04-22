@@ -1,10 +1,8 @@
 <?php
 include './partials/connect.php';
 
-// Get and sanitize the report ID
 $report_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Fetch the specific report
 $sql = "SELECT * FROM user WHERE user_id = ?";
 $stmt = $con->prepare($sql);
 $stmt->execute([$report_id]);

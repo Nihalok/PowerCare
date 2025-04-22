@@ -456,7 +456,6 @@ if (isset($_POST['submit'])) {
     </div>
 
     <script>
-        // Add animation to form when page loads
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.querySelector('.report-form');
             form.style.animation = 'pulse 2s infinite';
@@ -465,8 +464,6 @@ if (isset($_POST['submit'])) {
                 form.style.animation = '';
             }, 2000);
         });
-
-        // Update file input display
         const fileInputs = document.querySelectorAll('input[type="file"]');
         fileInputs.forEach(input => {
             input.addEventListener('change', function () {
